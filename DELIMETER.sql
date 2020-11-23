@@ -126,6 +126,33 @@ SELECT
  LEFT JOIN departments as d
  on d.dept_no =de.dept_no
  
+ --List first name, last name, and sex for employees whose first name is "Hercules" and last names begin with "B."
+ 
+ 
+ SELECT 
+	last_name,
+	first_name,
+	sex
+FROM employees
+WHERE first_name = 'Hercules' AND last_name like 'B%'
+
+--List all employees in the Sales departments, including their employee number, 
+--last name, first name, and department name.
+
+SELECT 
+    e.emp_no, 
+	e.last_name, 
+	e.first_name, 
+	d.dept_name
+FROM employees AS e
+LEFT JOIN dept_emp
+ON e.emp_no = dept_emp.emp_no
+LEFT JOIN departments AS d
+ON dept_emp.dept_no = d.dept_no
+WHERE dept_name = 'Sales'
+;
+
+ 
 
 
 
