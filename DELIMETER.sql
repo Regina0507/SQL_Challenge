@@ -113,6 +113,21 @@ AND hire_date < '1987-01-01'
 ORDER BY hire_date 
 ;
 
+--List the department of each employee with the following information: 
+--employee number, last name, first name, and department name.
+SELECT
+   e.emp_no,
+   e.last_name,
+   e.first_name,
+   d.dept_name
+ FROM employees AS e
+ LEFT JOIN dept_emp as de
+ ON e.emp_no = de.emp_no
+ LEFT JOIN departments as d
+ on d.dept_no =de.dept_no
+ 
+
+
 
 
 
