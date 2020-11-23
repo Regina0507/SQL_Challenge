@@ -88,3 +88,14 @@ COPY titles
 	FROM 'C:\Users\Regina\gwu-arl-data-pt-09-2020-u-c\02-Homework\09-SQL\Part-2-Case-Assignment\data\titles.csv'
 	DELIMITER ',' 
 	CSV HEADER;
+	
+ --List the following details of each employee: employee number, last name, first name, sex, and salary.
+SELECT 
+    e.emp_no,
+	last_name,
+	first_name,
+	sex,
+	salary
+FROM employees AS e
+LEFT JOIN salaries As s
+ON e.emp_no = s.emp_no
