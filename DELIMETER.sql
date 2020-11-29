@@ -43,6 +43,7 @@ CREATE TABLE dept_emp (
 		CONSTRAINT fk_dept_emp_emp_no FOREIGN KEY(emp_no) REFERENCES employees(emp_no),
 		CONSTRAINT fk_dept_emp_dept_no FOREIGN KEY(dept_no) REFERENCES departments(dept_no)
 );
+ALTER TABLE dept_emp ADD CONSTRAINT PK_EMP_DEPT_NO PRIMARY KEY (emp_no,dept_no)
 
 COPY dept_emp
 	FROM 'C:\Users\Regina\gwu-arl-data-pt-09-2020-u-c\02-Homework\09-SQL\Part-2-Case-Assignment\data\dept_emp.csv'
@@ -57,6 +58,7 @@ CREATE TABLE dept_manager (
 		CONSTRAINT fk_dept_manager_emp_no FOREIGN KEY(emp_no) REFERENCES employees(emp_no),
 		CONSTRAINT fk_dept_manager_dept_no FOREIGN KEY(dept_no) REFERENCES departments(dept_no")
 );
+ALTER TABLE dept_manager ADD CONSTRAINT PK_DEP_EMPT_NO PRIMARY KEY (dept_no,emp_no)
 
 COPY dept_manager
 	FROM 'C:\Users\Regina\gwu-arl-data-pt-09-2020-u-c\02-Homework\09-SQL\Part-2-Case-Assignment\data\dept_manager.csv'
@@ -89,7 +91,7 @@ COPY titles
 	DELIMITER ',' 
 	CSV HEADER;
 	
- --List the following details of each employee: employee number, last name, first name, sex, and salary.
+/* -1-List the following details of each employee: employee number, last name, first name, sex, and salary.*/
  
 SELECT 
     e.emp_no,
@@ -101,7 +103,7 @@ FROM employees AS e
 LEFT JOIN salaries As s
 ON e.emp_no = s.emp_no
 
---List first name, last name, and hire date for employees who were hired in 1986.
+/*-2-List first name, last name, and hire date for employees who were hired in 1986.*/
 
 SELECT 
 	first_name,
@@ -112,8 +114,28 @@ WHERE hire_date > '1985-12-31'
 AND hire_date < '1987-01-01'
 ORDER BY hire_date 
 ;
+/*3. List the manager of each department with the following information: department number, 
+department name, the manager's employee number, last name, first name.*/
 
---List the department of each employee with the following information: 
+select 
+	dm.dept_no,
+	d.dept_name,
+	dm.emp_no,
+	t.title,
+	e.last_name,
+	e.first_name 
+FROM employees AS e
+INNER JOIN dept_manager AS dm
+ON e.emp_no = dm.emp_no
+INNER JOIN departments AS d
+ON d.dept_no = dm.dept_no
+INNER JOIN titles AS t
+ON t.title_id = e.emp_title_id
+
+
+
+
+/*-4-List the department of each employee with the following information: */
 --employee number, last name, first name, and department name.
 SELECT
    e.emp_no,
@@ -126,7 +148,7 @@ SELECT
  LEFT JOIN departments as d
  on d.dept_no =de.dept_no
  
- --List first name, last name, and sex for employees whose first name is "Hercules" and last names begin with "B."
+ /* 5--List first name, last name, and sex for employees whose first name is "Hercules" and last names begin with "B." */
  
  
  SELECT 
@@ -136,8 +158,8 @@ SELECT
 FROM employees
 WHERE first_name = 'Hercules' AND last_name like 'B%'
 
---List all employees in the Sales departments, including their employee number, 
---last name, first name, and department name.
+/*6--List all employees in the Sales departments, including their employee number, 
+--last name, first name, and department name.*/
 
 SELECT 
     e.emp_no, 
@@ -152,8 +174,8 @@ ON dept_emp.dept_no = d.dept_no
 WHERE dept_name = 'Sales'
 
 
---7. List all employees in the Sales and Development departments, including their employee number, last name, 
---first name, and department name.
+/*--7. List all employees in the Sales and Development departments, including their employee number, last name, 
+--first name, and department name.*/
 SELECT 
     e.emp_no, 
 	e.last_name, 
@@ -166,8 +188,8 @@ LEFT JOIN departments AS d
 ON dept_emp.dept_no = d.dept_no
 WHERE dept_name = 'Sales' OR dept_name = 'Development'
 
---In descending order, list the frequency count of employee last names, i.e., 
---how many employees share each last name.
+/*8--In descending order, list the frequency count of employee last names, i.e., 
+--how many employees share each last name.*/
 
 SELECT 
 last_name, COUNT(last_name) as frequency_count
